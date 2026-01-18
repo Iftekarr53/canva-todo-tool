@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced To-Do List App</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000000; /* Solid black background */
+            margin: 0;
+            padding: 20px;
+            color: #ffffff; /* White text for contrast */
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #1a1a1a; /* Dark gray container for better readability */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(255,255,255,0.1);
+            border: 1px solid #333333;
+        }
+        h1 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        input, button {
+            padding: 12px;
+            border: 1px solid #555555;
+            border-radius: 5px;
+            font-size: 16px;
+            background: #2a2a2a;
+            color: #ffffff;
+        }
+        input::placeholder {
+            color: #cccccc;
+        }
+        input {
+            flex: 1;
+            min-width: 200px;
+        }
+        button {
+            background: #4a90e2;
+            color: white;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #357abd;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #2a2a2a;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 1px solid #444444;
+        }
+        .task-text {
+            flex: 1;
+            margin-right: 10px;
+            color: #ffffff;
+        }
+        .completed {
+            text-decoration: line-through;
+            color: #cccccc;
+        }
+        .eta {
+            font-size: 14px;
+            color: #cccccc;
+            margin-left: 10px;
+        }
+        .reminder-btn {
+            background: #ff9800;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .reminder-btn:hover {
+            background: #e68900;
+        }
+        .delete-btn {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .delete-btn:hover {
+            background: #d32f2f;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>To Do List</h1>
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Add a new task">
+            <input type="text" id="etaInput" placeholder="ETA (e.g., 30 min)">
+            <button onclick="addTask()">Add Task</button>
+        </div>
+        <ul id="taskList"></ul>
+    </div>
+
+    <script>
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const etaInput = document.getElementById('etaInput');
+            const taskText = taskInput.value.trim();
+            const etaText = etaInput.value.trim();
+            
+            if (taskText) {
+                const li = document.createElement('li');
+                
+                const taskSpan = document.createElement('span');
+                taskSpan.className = 'task-text';
+                taskSpan.textContent = taskText;
+                taskSpan.onclick = () => taskSpan.classList.toggle('completed');
+                
+                const etaSpan = document.createElement('span');
+                etaSpan.className = 'eta';
+                etaSpan.textContent = etaText ? `ETA: ${etaText}` : '';
+                
+                const reminderBtn = document.createElement('button');
+                reminderBtn.className = 'reminder-btn';
+                reminderBtn.textContent = 'Set Reminder';
+                reminderBtn.onclick = () => setReminder(taskText);
+                
+                const deleteBtn = document.createElement('button');
+                deleteBtn.className = 'delete-btn';
+                deleteBtn.textContent = 'Delete';
+                deleteBtn.onclick = () => li.remove();
+                
+                li.appendChild(taskSpan);
+                li.appendChild(etaSpan);
+                li.appendChild(reminderBtn);
+                li.appendChild(deleteBtn);
+                
+                document.getElementById('taskList').appendChild(li);
+                taskInput.value = '';
+                etaInput.value = '';
+            }
+        }
+        
+        function setReminder(task) {
+            const minutes = prompt('Remind me in how many minutes?');
+            if (minutes && !isNaN(minutes)) {
+                setTimeout(() => {
+                    alert(`Reminder: ${task}`);
+                }, minutes * 60000); // Convert minutes to milliseconds
+            }
+        }
+    </script>
+</body>
+</html>
